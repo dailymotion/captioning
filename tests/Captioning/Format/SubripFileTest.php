@@ -99,7 +99,7 @@ class SubripFileTest extends \PHPUnit_Framework_TestCase
     public function testDoesNotAllowSameStartAndEndTime()
     {
         $filename = __DIR__.'/../../Fixtures/failed-equal-start-and-end-time-in-last-queue.srt';
-        $this->setExpectedException('\Exception', $filename.' is not a proper .srt file.');
+        $this->setExpectedException('\Exception', 'This subtitle is not a proper .srt file');
         new SubripFile($filename);
     }
 
@@ -107,7 +107,7 @@ class SubripFileTest extends \PHPUnit_Framework_TestCase
     public function testDoesNotAllowSameOrderIndex()
     {
         $filename = __DIR__.'/../../Fixtures/failed-equal-subtitle-order-number.srt';
-        $this->setExpectedException('\Exception', $filename.' is not a proper .srt file.');
+        $this->setExpectedException('\Exception', 'This subtitle is not a proper .srt file');
         new SubripFile($filename);
     }
 }

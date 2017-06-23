@@ -2,6 +2,8 @@
 
 namespace Captioning\Format;
 
+use Captioning\Exception;
+
 class WebvttRegion
 {
     const ANCHOR_TYPE_REGION = 1;
@@ -202,7 +204,7 @@ class WebvttRegion
         }
         $_value = self::checkAnchorValues($anchor);
         if (null === $_value) {
-            throw new \Exception('Invalid anchor value, must be "XX%,YY%", "'.$anchor.'" given.');
+            throw new Exception('Invalid anchor value, must be "XX%,YY%", "'.$anchor.'" given.');
         }
         switch ($anchorType) {
             case self::ANCHOR_TYPE_REGION:

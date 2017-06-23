@@ -13,7 +13,7 @@ Captioning is a collection of tools made to help you create and edit subtitles i
 # Installation
 
 ``` sh
-composer require captioning/captioning "2.*"
+composer require dailymotion/captioning "2.*"
 ```
 
 # Usage

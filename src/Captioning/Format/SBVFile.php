@@ -2,6 +2,7 @@
 
 namespace Captioning\Format;
 
+use Captioning\Exception;
 use Captioning\File;
 
 class SBVFile extends File
@@ -16,7 +17,7 @@ class SBVFile extends File
         $res = preg_match_all(self::PATTERN_TIMECODE, $this->fileContent, $matches);
 
         if (!$res || $res == 0) {
-            throw new \Exception($this->filename.' is not a proper .sbv file.');
+            throw new Exception('Not a proper .sbv file.');
         }
 
         $lines = explode($this->lineEnding, $this->fileContent);
@@ -27,7 +28,7 @@ class SBVFile extends File
                 case 'time':
                     $timeline = explode(',', $line);
                     if (count($timeline) !== 2) {
-                        throw new \Exception($this->filename." is not a proper .sbv file. (Invalid timestamp delimiter at line ".$lineNumber.")");
+                        throw new Exception('Invalid timestamp delimiter at line '.$lineNumber);
                     }
                     $cueStart = trim($timeline[0]);
                     $cueStop = trim($timeline[1]);

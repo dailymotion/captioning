@@ -2,6 +2,7 @@
 
 namespace Captioning\Format;
 
+use Captioning\Exception;
 use Captioning\File;
 
 class SubstationalphaFile extends File
@@ -195,7 +196,7 @@ class SubstationalphaFile extends File
                 $tmp_styles = array();
                 $tmp = explode(':', $line);
                 if ($tmp[0] !== 'Format') {
-                    throw new \Exception($this->filename.' is not valid file.');
+                    throw new Exception('Not valid file.');
                 }
                 $tmp2 = explode(',', $tmp[1]);
 
@@ -206,7 +207,7 @@ class SubstationalphaFile extends File
                 $line = $this->getNextValueFromArray($fileContentArray);
                 $tmp = explode(':', $line);
                 if ($tmp[0] !== 'Style') {
-                    throw new \Exception($this->filename.' is not valid file.');
+                    throw new Exception('Not valid file.');
                 }
                 $tmp2 = explode(',', $tmp[1]);
                 $i = 0;

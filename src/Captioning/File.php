@@ -216,7 +216,7 @@ abstract class File implements FileInterface, \Countable
     /**
      * @param null $_filename
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public  function loadFromFile($_filename = null)
     {
@@ -227,11 +227,11 @@ abstract class File implements FileInterface, \Countable
         }
 
         if (!file_exists($_filename)) {
-            throw new \Exception('File "'.$_filename.'" not found.');
+            throw new Exception('File "'.$_filename.'" not found.');
         }
 
         if (!($content = file_get_contents($this->filename))) {
-            throw new \Exception('Could not read file content ('.$_filename.').');
+            throw new Exception('Could not read file content ('.$_filename.').');
         }
 
         $this->loadFromString($content);
@@ -316,7 +316,7 @@ abstract class File implements FileInterface, \Countable
      * @param string $_start A timecode
      * @param string $_stop  A timecode
      *
-     * @throws \Exception
+     * @throws Exception
      * @return File
      */
     public function addCue($_mixed, $_start = null, $_stop = null)
@@ -327,7 +327,7 @@ abstract class File implements FileInterface, \Countable
         if (is_object($_mixed) && class_exists(get_class($_mixed)) && class_exists(__NAMESPACE__.'\Cue') && is_subclass_of($_mixed, __NAMESPACE__.'\Cue')) {
             $cueFormat = Cue::getFormat($_mixed);
             if ($cueFormat !== $fileFormat) {
-                throw new \Exception("Can't add a $cueFormat cue in a $fileFormat file.");
+                throw new Exception("Can't add a $cueFormat cue in a $fileFormat file.");
             }
             $_mixed->setLineEnding($this->lineEnding);
             $this->cues[] = $_mixed;
@@ -412,12 +412,12 @@ abstract class File implements FileInterface, \Countable
     /**
      * @param FileInterface $_file
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function merge(FileInterface $_file)
     {
         if (!is_a($_file, get_class($this))) {
-            throw new \Exception('Can\'t merge! Wrong format: '.$this->getFormat($_file));
+            throw new Exception('Can\'t merge! Wrong format: '.$this->getFormat($_file));
         }
 
         $this->cues = array_merge($this->cues, $_file->getCues());
@@ -557,7 +557,7 @@ abstract class File implements FileInterface, \Countable
 
         $res = file_put_contents($filename, $file_content);
         if (!$res) {
-            throw new \Exception('Unable to save the file.');
+            throw new Exception('Unable to save the file.');
         }
     }
 
@@ -669,7 +669,7 @@ abstract class File implements FileInterface, \Countable
 
     /**
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getFileContentAsArray()
     {

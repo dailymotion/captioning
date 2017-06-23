@@ -202,7 +202,7 @@ abstract class Cue implements CueInterface
     private function parseTextLines($_text)
     {
         if (trim($_text) === '') {
-            throw new \Exception('No text provided.');
+            throw new Exception('No text provided.');
         }
 
         $this->textLines = array_map('trim', preg_split('/$\R?^/m', $_text));

@@ -2,6 +2,7 @@
 
 namespace Captioning\Format;
 
+use Captioning\Exception;
 use Captioning\File;
 
 class SubripFile extends File
@@ -53,7 +54,7 @@ class SubripFile extends File
         $matches = array();
         $res = preg_match(self::PATTERN_HEADER, $content, $matches);
         if ($res === false || $res === 0) {
-            throw new \Exception($this->filename.' is not a proper .srt file (Invalid header).');
+            throw new Exception('Invalid header.');
         }
 
         $this->setLineEnding($matches[2]);
@@ -76,11 +77,11 @@ class SubripFile extends File
             switch ($state) {
             case 'order':
                 if (!preg_match(self::PATTERN_ORDER, $line)) {
-                    throw new \Exception($this->filename.' is not a proper .srt file. (Expected subtitle order index at line '.$lineNumber.')');
+                    throw new Exception('Expected subtitle order index at line '.$lineNumber);
                 }
                 $subtitleIndex = intval($line);
                 if ($strict && $subtitleOrder !== $subtitleIndex) {
-                    throw new \Exception($this->filename.' is not a proper .srt file. (Invalid subtitle order index: '.$line.' at line '.$lineNumber.')');
+                    throw new Exception('Invalid subtitle order index: '.$line.' at line '.$lineNumber);
                 }
                 $state = 'time';
                 break;
@@ -88,16 +89,16 @@ class SubripFile extends File
             case 'time':
                 $timeline = explode(' --> ', $line);
                 if (count($timeline) !== 2) {
-                  throw new \Exception($this->filename." is not a proper .srt file. (Invalid timestamp delimiter at line ".$lineNumber.")");
+                  throw new Exception('Invalid timestamp delimiter at line '.$lineNumber);
                 }
 
                 $subtitleTimeStart = trim($timeline[0]);
                 $subtitleTimeEnd = trim($timeline[1]);
                 if (!preg_match(self::PATTERN_TIMESTAMP, $subtitleTimeStart)) {
-                  throw new \Exception($this->filename.' is not a proper .srt file. (Invalid start timestamp format '.$subtitleTimeStart.' at line '.$lineNumber.')');
+                  throw new Exception('Invalid start timestamp format '.$subtitleTimeStart.' at line '.$lineNumber);
                 }
                 if (!preg_match(self::PATTERN_TIMESTAMP, $subtitleTimeEnd)) {
-                  throw new \Exception($this->filename.' is not a proper .srt file. (Invalid end timestamp format '.$subtitleTimeEnd.' at line '.$lineNumber.')');
+                  throw new Exception('Invalid end timestamp format '.$subtitleTimeEnd.' at line '.$lineNumber);
                 }
 
                 $subtitleTimeStart = $this->cleanUpTimecode($subtitleTimeStart);
@@ -107,10 +108,10 @@ class SubripFile extends File
                     $strict && // Allow overlapping timecodes when not in "strict mode"
                     !$this->validateTimelines($subtitleTimeLast, $subtitleTimeStart, true)
                 ) {
-                    throw new \Exception($this->filename.' is not a proper .srt file. (Starting time invalid: '.$subtitleTimeStart.' at line '.$lineNumber.')');
+                    throw new Exception('Starting time invalid: '.$subtitleTimeStart.' at line '.$lineNumber);
                 }
                 if (!$this->validateTimelines($subtitleTimeStart, $subtitleTimeEnd, !$strict)) {
-                    throw new \Exception($this->filename.' is not a proper .srt file. (Ending time invalid: '.$subtitleTimeEnd.' at line '.$lineNumber.')');
+                    throw new Exception('Ending time invalid: '.$subtitleTimeEnd.' at line '.$lineNumber);
                 }
                 $subtitleText = array();
                 $state = 'text';
